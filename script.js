@@ -2,11 +2,11 @@ const countriesContainer = document.querySelector('.countries-container')
 const filterByRegion = document.querySelector('.filter-by-region')
 const searchInput = document.querySelector('.search-container input')
 const themeChanger = document.querySelector('.theme-changer')
-const showMoreBtn = document.getElementById('showMoreBtn') // New Button
+const showMoreBtn = document.getElementById('showMoreBtn') 
 
 let allCountriesData = []
-let randomizedCountries = [] // Stores the shuffled order
-let currentCount = 12;       // How many are currently visible
+let randomizedCountries = [] 
+let currentCount = 12;       
 
 // 1. Fetch Data
 fetch('https://restcountries.com/v3.1/all?fields=name,capital,flags,region,population')
@@ -20,7 +20,6 @@ fetch('https://restcountries.com/v3.1/all?fields=name,capital,flags,region,popul
     // Render the first 12
     renderCountries(randomizedCountries.slice(0, currentCount));
     
-    // Show the button
     showMoreBtn.style.display = 'inline-block';
   })
   .catch((err) => {
@@ -28,26 +27,19 @@ fetch('https://restcountries.com/v3.1/all?fields=name,capital,flags,region,popul
       countriesContainer.innerHTML = `<h3 style="text-align:center">⚠️ Failed to load data.</h3>`;
   });
 
-// 2. Show More Button Logic
 showMoreBtn.addEventListener('click', () => {
-    // Calculate the next batch (e.g., index 12 to 24)
     const nextBatch = randomizedCountries.slice(currentCount, currentCount + 12);
     
-    // Render them WITHOUT clearing the container (true = append)
     renderCountries(nextBatch, true);
     
-    // Update the counter
     currentCount += 12;
     
-    // If we have shown all countries, hide the button
     if (currentCount >= randomizedCountries.length) {
         showMoreBtn.style.display = 'none';
     }
 });
 
-// 3. Render Function (Updated to support "Appending")
 function renderCountries(data, append = false) {
-  // If we are NOT appending (like in search), clear the container first
   if (!append) {
       countriesContainer.innerHTML = ''
   }
